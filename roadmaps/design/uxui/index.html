@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap UX/UI Design — Júnior</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf7f4;
+    --surface: #ffffff;
+    --surface2: #f5f0eb;
+    --border: #e8e0d8;
+    --accent: #c4622d;
+    --accent2: #8b4513;
+    --accent3: #e8956d;
+    --text: #1a1410;
+    --muted: #8a7a6e;
+    --serif: 'DM Serif Display', serif;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; overflow-x: hidden; }
+
+  /* HEADER */
+  .header {
+    background: var(--text);
+    color: var(--bg);
+    padding: 80px 40px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: 'UX';
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    font-family: var(--serif);
+    font-size: 240px;
+    color: rgba(255,255,255,0.04);
+    pointer-events: none;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .header-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent3);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 400;
+    line-height: 1.05;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+
+  h1 em { color: var(--accent3); font-style: italic; }
+
+  .header-sub {
+    font-family: var(--sans);
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    padding: 18px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    background: rgba(250,247,244,0.95);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+  }
+
+  .progress-label { font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .progress-track { flex: 1; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+  .progress-count { font-family: var(--mono); font-size: 11px; color: var(--accent); white-space: nowrap; }
+
+  /* CONTAINER */
+  .container { max-width: 1100px; margin: 0 auto; padding: 60px 40px; }
+
+  /* CALLOUT */
+  .callout {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 48px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout-text { font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.8; }
+  .callout-text strong { color: var(--accent); }
+
+  /* SECTION */
+  .section { margin-bottom: 64px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .section-num {
+    font-family: var(--serif);
+    font-size: 48px;
+    color: var(--border);
+    line-height: 1;
+    font-weight: 400;
+    flex-shrink: 0;
+    width: 60px;
+  }
+
+  .section-meta { flex: 1; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+  .section-title { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 2px; }
+  .section-desc { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .section-badge { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 2px; border: 1px solid var(--accent); color: var(--accent); background: rgba(196,98,45,0.06); white-space: nowrap; }
+
+  /* GRID */
+  .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+
+  /* CARD */
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .topic-card:hover { border-color: var(--accent3); box-shadow: 0 2px 12px rgba(196,98,45,0.08); transform: translateY(-1px); }
+
+  .topic-card.done { background: #fdf9f7; border-color: rgba(196,98,45,0.3); }
+  .topic-card.done .topic-name { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--accent3); }
+
+  .topic-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+  .topic-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; }
+
+  .topic-check {
+    width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: all 0.2s; font-size: 10px; color: transparent;
+  }
+  .topic-card.done .topic-check { background: var(--accent); border-color: var(--accent); color: white; }
+
+  .topic-desc { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+  .topic-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 2px; border: 1px solid var(--border); color: var(--muted); }
+  .hot .tag-hot { color: var(--accent); border-color: rgba(196,98,45,0.3); }
+
+  .reset-btn { font-family: var(--mono); font-size: 11px; color: var(--muted); background: none; border: 1px solid var(--border); padding: 6px 14px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .footer { text-align: center; padding: 40px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+  @media (max-width: 600px) {
+    .container { padding: 40px 20px; }
+    .header { padding: 60px 20px 50px; }
+    .progress-bar-wrap { padding: 16px 20px; }
+    .topic-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-tag">// roadmap júnior · agências & estúdios</span>
+  <h1>UX/<em>UI</em><br>Design</h1>
+  <p class="header-sub">Do entendimento do usuário à entrega visual — tópicos essenciais para sua primeira vaga numa agência ou estúdio de design.</p>
+</div>
+
+<div class="progress-bar-wrap">
+  <span class="progress-label">progresso</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 / 0</span>
+  <button class="reset-btn" onclick="resetAll()">resetar</button>
+</div>
+
+<div class="container">
+
+  <div class="callout">
+    <div class="callout-icon">✦</div>
+    <div class="callout-text">
+      <strong>Como usar:</strong> Marque os tópicos conforme for estudando. Os marcados com <strong>✦ essencial</strong> são os mais cobrados em entrevistas e testes práticos para júnior em agências.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-meta">
+        <div class="section-title">Fundamentos de UX</div>
+        <div class="section-desc">// entender o usuário antes de desenhar qualquer coisa</div>
+      </div>
+      <div class="section-badge">base</div>
+    </div>
+    <div class="topic-grid" id="grid-s1"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-meta">
+        <div class="section-title">UI Design — Fundamentos Visuais</div>
+        <div class="section-desc">// princípios que guiam toda decisão visual</div>
+      </div>
+      <div class="section-badge">obrigatório</div>
+    </div>
+    <div class="topic-grid" id="grid-s2"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-meta">
+        <div class="section-title">Figma — Domínio da Ferramenta</div>
+        <div class="section-desc">// o padrão da indústria — não tem desculpa</div>
+      </div>
+      <div class="section-badge">obrigatório</div>
+    </div>
+    <div class="topic-grid" id="grid-s3"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-meta">
+        <div class="section-title">Design Systems & Componentes</div>
+        <div class="section-desc">// consistência em escala — muito valorizado em agências</div>
+      </div>
+      <div class="section-badge">diferencial</div>
+    </div>
+    <div class="topic-grid" id="grid-s4"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-meta">
+        <div class="section-title">Pesquisa & Validação</div>
+        <div class="section-desc">// decisões baseadas em dados, não em achismo</div>
+      </div>
+      <div class="section-badge">importante</div>
+    </div>
+    <div class="topic-grid" id="grid-s5"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-meta">
+        <div class="section-title">Acessibilidade & Inclusão</div>
+        <div class="section-desc">// design para todos — exigido em projetos sérios</div>
+      </div>
+      <div class="section-badge">importante</div>
+    </div>
+    <div class="topic-grid" id="grid-s6"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-meta">
+        <div class="section-title">Portfólio & Apresentação</div>
+        <div class="section-desc">// seu trabalho só existe se souber apresentar</div>
+      </div>
+      <div class="section-badge">carreira</div>
+    </div>
+    <div class="topic-grid" id="grid-s7"></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Roadmap UX/UI Design · Júnior · Agências & Estúdios</p>
+  <p style="margin-top:6px;opacity:0.5">// progresso salvo no navegador</p>
+</div>
+
+<script>
+const DATA = {
+  's1': [
+    { id:'u1', name:'✦ O que é UX de verdade', desc:'Diferença entre UX e UI, por que UX vai além da tela e como pensar em experiência completa.', tags:['conceito'], hot:true },
+    { id:'u2', name:'✦ Heurísticas de Nielsen', desc:'As 10 heurísticas de usabilidade — base de qualquer avaliação de interface.', tags:['usabilidade'], hot:true },
+    { id:'u3', name:'✦ Jornada do usuário', desc:'User journey map: mapear pontos de contato, emoções e oportunidades de melhoria.', tags:['ferramentas'], hot:true },
+    { id:'u4', name:'✦ Personas', desc:'Criar personas baseadas em dados reais, diferença de proto-persona e quando usar cada uma.', tags:['pesquisa'], hot:true },
+    { id:'u5', name:'Arquitetura da informação', desc:'Organizar conteúdo de forma lógica: card sorting, tree testing, hierarquia de informação.', tags:['estrutura'], hot:false },
+    { id:'u6', name:'✦ Fluxos de usuário', desc:'User flows e task flows: mapear caminhos que o usuário percorre para completar tarefas.', tags:['fluxo'], hot:true },
+    { id:'u7', name:'Mental models', desc:'Como usuários criam expectativas sobre como sistemas funcionam — base para design intuitivo.', tags:['cognição'], hot:false },
+    { id:'u8', name:'Lei de Hick e Lei de Fitts', desc:'Tempo de decisão aumenta com opções. Tamanho e distância impactam a velocidade de clique.', tags:['psicologia'], hot:false },
+  ],
+  's2': [
+    { id:'v1', name:'✦ Teoria das cores', desc:'Círculo cromático, esquemas de cores (complementar, análogo, triádico), temperatura e contraste.', tags:['visual'], hot:true },
+    { id:'v2', name:'✦ Tipografia', desc:'Hierarquia tipográfica, escala, espaçamento, combinação de fontes e legibilidade.', tags:['visual'], hot:true },
+    { id:'v3', name:'✦ Grid e layout', desc:'Grid de 8pt, colunas, gutter, espaçamento consistente e como criar ritmo visual.', tags:['layout'], hot:true },
+    { id:'v4', name:'✦ Gestalt aplicado ao UI', desc:'Proximidade, semelhança, continuidade e fechamento — como o olho percebe grupos.', tags:['percepção'], hot:true },
+    { id:'v5', name:'✦ Hierarquia visual', desc:'Peso, tamanho, cor e posição para guiar o olho do usuário na ordem certa.', tags:['composição'], hot:true },
+    { id:'v6', name:'Espaço negativo', desc:'Uso do espaço vazio como elemento de design — respiração, foco e elegância.', tags:['composição'], hot:false },
+    { id:'v7', name:'Iconografia', desc:'Padrões de ícones, consistência de estilo, tamanhos e uso de ícones com texto.', tags:['visual'], hot:false },
+    { id:'v8', name:'✦ Contraste e acessibilidade visual', desc:'Ratio de contraste WCAG AA (4.5:1), ferramentas de verificação e aplicação prática.', tags:['a11y'], hot:true },
+    { id:'v9', name:'Motion e microinterações', desc:'Princípios de animação, feedback visual, duração e easing adequados.', tags:['interação'], hot:false },
+  ],
+  's3': [
+    { id:'f1', name:'✦ Auto Layout', desc:'Padding, gap, direção, wrap — o coração do Figma moderno. Saber bem é obrigatório.', tags:['figma'], hot:true },
+    { id:'f2', name:'✦ Components e variantes', desc:'Criar componentes reutilizáveis, variantes com properties e instâncias.', tags:['figma'], hot:true },
+    { id:'f3', name:'✦ Prototipagem interativa', desc:'Criar protótipos com navegação, overlays, scroll e animações básicas.', tags:['figma'], hot:true },
+    { id:'f4', name:'✦ Styles e Variables', desc:'Color styles, text styles, e as novas Variables do Figma para tokens de design.', tags:['figma'], hot:true },
+    { id:'f5', name:'Grids e guias', desc:'Configurar grids de layout, guias e frames responsivos.', tags:['figma'], hot:false },
+    { id:'f6', name:'✦ Organização de arquivo', desc:'Nomenclatura de layers, páginas bem estruturadas, frames aninhados e naming conventions.', tags:['figma'], hot:true },
+    { id:'f7', name:'Plugins essenciais', desc:'Unsplash, Iconify, Stark (a11y), Content Reel — plugins que aceleram o trabalho.', tags:['produtividade'], hot:false },
+    { id:'f8', name:'Dev Mode e handoff', desc:'Inspecionar specs, exportar assets e comunicar com o time de dev eficientemente.', tags:['colaboração'], hot:false },
+  ],
+  's4': [
+    { id:'ds1', name:'✦ O que é um Design System', desc:'Diferença de style guide, UI kit e design system. Tokens, componentes e documentação.', tags:['conceito'], hot:true },
+    { id:'ds2', name:'✦ Atomic Design', desc:'Átomos, moléculas, organismos, templates e páginas — estruturar componentes em escala.', tags:['metodologia'], hot:true },
+    { id:'ds3', name:'Tokens de design', desc:'Cores, espaçamento e tipografia como tokens — ponte entre design e código.', tags:['tokens'], hot:false },
+    { id:'ds4', name:'✦ Estudar DSs existentes', desc:'Analisar Material Design, Ant Design, Carbon — entender decisões e padrões de grandes times.', tags:['referência'], hot:true },
+    { id:'ds5', name:'Documentação de componentes', desc:'Como documentar uso correto, variantes, estados e casos de borda dos componentes.', tags:['documentação'], hot:false },
+  ],
+  's5': [
+    { id:'r1', name:'✦ Entrevistas com usuários', desc:'Como conduzir, roteiro de perguntas, escuta ativa e análise dos insights coletados.', tags:['qualitativo'], hot:true },
+    { id:'r2', name:'✦ Teste de usabilidade', desc:'Moderated vs unmoderated, tasks, métricas de sucesso e como reportar resultados.', tags:['validação'], hot:true },
+    { id:'r3', name:'Análise heurística', desc:'Avaliar interfaces com as heurísticas de Nielsen de forma estruturada e documentada.', tags:['avaliação'], hot:false },
+    { id:'r4', name:'✦ Benchmark e análise competitiva', desc:'Comparar concorrentes, identificar padrões do mercado e oportunidades de diferenciação.', tags:['estratégia'], hot:true },
+    { id:'r5', name:'Card Sorting', desc:'Método para entender como usuários categorizam informação — base para IA e navegação.', tags:['técnica'], hot:false },
+    { id:'r6', name:'✦ Como apresentar pesquisa', desc:'Transformar dados brutos em insights acionáveis e apresentar para stakeholders.', tags:['comunicação'], hot:true },
+  ],
+  's6': [
+    { id:'a1', name:'✦ WCAG — o básico que toda designer precisa saber', desc:'Níveis A e AA, contraste, foco visível, textos alternativos e navegação por teclado.', tags:['padrão'], hot:true },
+    { id:'a2', name:'✦ Design para diferentes necessidades', desc:'Visual, motora, cognitiva e auditiva — como cada uma impacta decisões de design.', tags:['inclusão'], hot:true },
+    { id:'a3', name:'Estados de foco e interação', desc:'Focus rings visíveis, estados hover/active/disabled e feedback para todas as interações.', tags:['interação'], hot:false },
+    { id:'a4', name:'Texto alternativo em imagens', desc:'Quando e como escrever alt text significativo — parte do trabalho de design, não só dev.', tags:['conteúdo'], hot:false },
+  ],
+  's7': [
+    { id:'p1', name:'✦ Estrutura de case study', desc:'Problema → processo → solução → resultado. Como apresentar seu raciocínio, não só o visual.', tags:['portfólio'], hot:true },
+    { id:'p2', name:'✦ Apresentar processo, não só resultado', desc:'Agências contratam pela forma como você pensa, não só pelo visual final.', tags:['carreira'], hot:true },
+    { id:'p3', name:'✦ Behance ou site próprio', desc:'Onde hospedar o portfólio, como organizar projetos e o que não colocar.', tags:['presença'], hot:true },
+    { id:'p4', name:'✦ Teste prático de agência', desc:'Como se preparar para testes de design com brief, timing limitado e entrega comentada.', tags:['entrevista'], hot:true },
+    { id:'p5', name:'LinkedIn para designers', desc:'Headline, about e como mostrar trabalho mesmo sem experiência formal.', tags:['carreira'], hot:false },
+    { id:'p6', name:'Feedback e iteração', desc:'Como receber critique, responder com raciocínio e demonstrar maturidade profissional.', tags:['soft skills'], hot:false },
+  ],
+};
+
+const STORAGE_KEY = 'roadmap_uxui_v1';
+function getState() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; } }
+function saveState(s) { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+function toggleTopic(id) { const s = getState(); s[id] = !s[id]; saveState(s); renderAll(); }
+function resetAll() { if (confirm('Resetar todo o progresso?')) { localStorage.removeItem(STORAGE_KEY); renderAll(); } }
+
+function renderCard(t) {
+  const done = !!getState()[t.id];
+  return `<div class="topic-card ${done?'done':''}" onclick="toggleTopic('${t.id}')">
+    <div class="topic-top">
+      <div class="topic-name">${t.name}</div>
+      <div class="topic-check">${done?'✓':''}</div>
+    </div>
+    <div class="topic-desc">${t.desc}</div>
+    <div class="topic-tags">${t.tags.map(tag=>`<span class="tag">${tag}</span>`).join('')}</div>
+  </div>`;
+}
+
+function renderAll() {
+  const state = getState(); let total=0, done=0;
+  Object.entries(DATA).forEach(([sec, topics]) => {
+    const g = document.getElementById(`grid-${sec}`);
+    if(g) g.innerHTML = topics.map(renderCard).join('');
+    total += topics.length;
+    done += topics.filter(t=>!!state[t.id]).length;
+  });
+  const pct = total>0?Math.round(done/total*100):0;
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressCount').textContent = `${done} / ${total} (${pct}%)`;
+}
+renderAll();
+</script>
+</body>
+</html>

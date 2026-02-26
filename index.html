@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmaps — Pedro Toselli</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0c0e;
+    --surface: #131316;
+    --surface2: #1a1a1f;
+    --border: #222228;
+    --border2: #2e2e38;
+    --text: #ededf0;
+    --muted: #6b6b7a;
+    --subtle: #3a3a48;
+
+    /* category colors */
+    --fe: #4f8ef7;
+    --fe-dim: rgba(79,142,247,0.08);
+    --fe-border: rgba(79,142,247,0.2);
+
+    --ds: #e8875a;
+    --ds-dim: rgba(232,135,90,0.08);
+    --ds-border: rgba(232,135,90,0.2);
+
+    --serif: 'Instrument Serif', serif;
+    --sans: 'Instrument Sans', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ─────────────────────────────────── */
+  header {
+    position: relative;
+    z-index: 1;
+    padding: 72px 64px 64px;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 40px;
+  }
+
+  .header-glow {
+    position: absolute;
+    top: -120px;
+    left: 40px;
+    width: 500px;
+    height: 400px;
+    background: radial-gradient(ellipse at center, rgba(79,142,247,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .header-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--muted);
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 400;
+    line-height: 1.0;
+    color: var(--text);
+    letter-spacing: -1px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .header-right {
+    text-align: right;
+    padding-bottom: 8px;
+  }
+
+  .header-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .header-by {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--subtle);
+  }
+
+  .header-by a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .header-by a:hover { color: var(--text); }
+
+  /* ── MAIN ─────────────────────────────────── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 72px 64px;
+  }
+
+  /* ── CATEGORY ─────────────────────────────── */
+  .category {
+    margin-bottom: 80px;
+  }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .category-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .category-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .category-name {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .category-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .category-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--subtle);
+  }
+
+  /* ── ROADMAP GRID ─────────────────────────── */
+  .roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+
+  /* ── ROADMAP CARD ─────────────────────────── */
+  .card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 28px 24px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 12px;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  /* frontend cards */
+  .card.fe { border-color: var(--border); }
+  .card.fe::before { background: var(--fe-dim); }
+  .card.fe:hover { border-color: var(--fe-border); }
+  .card.fe .card-icon { color: var(--fe); }
+  .card.fe .card-tag { color: var(--fe); border-color: var(--fe-border); background: var(--fe-dim); }
+  .card.fe .arrow { color: var(--fe); }
+
+  /* design cards */
+  .card.ds { border-color: var(--border); }
+  .card.ds::before { background: var(--ds-dim); }
+  .card.ds:hover { border-color: var(--ds-border); }
+  .card.ds .card-icon { color: var(--ds); }
+  .card.ds .card-tag { color: var(--ds); border-color: var(--ds-border); background: var(--ds-dim); }
+  .card.ds .arrow { color: var(--ds); }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-icon {
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .arrow {
+    font-size: 18px;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .card:hover .arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .card-body {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+  }
+
+  .card-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+
+  .card-title em {
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .card-desc {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .card-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid;
+  }
+
+  .card-level {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--subtle);
+  }
+
+  /* ── FOOTER ─────────────────────────────────── */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 32px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .footer-left {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--subtle);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--text); }
+
+  /* ── ANIMATIONS ──────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .category { animation: fadeUp 0.5s ease both; }
+  .category:nth-child(2) { animation-delay: 0.1s; }
+
+  .card { animation: fadeUp 0.4s ease both; }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+
+  /* ── RESPONSIVE ──────────────────────────────── */
+  @media (max-width: 768px) {
+    header { padding: 48px 24px 40px; grid-template-columns: 1fr; }
+    .header-right { text-align: left; }
+    main { padding: 48px 24px; }
+    footer { padding: 24px; flex-direction: column; align-items: flex-start; gap: 16px; }
+    .roadmap-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-glow"></div>
+  <div>
+    <div class="header-eyebrow">repositório público</div>
+    <h1>Road<em>maps</em></h1>
+  </div>
+  <div class="header-right">
+    <div class="header-count">4 roadmaps · 2 categorias</div>
+    <div class="header-by">by <a href="https://github.com/phtoselli" target="_blank">@phtoselli</a></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- FRONTEND -->
+  <div class="category">
+    <div class="category-header">
+      <div class="category-label">
+        <div class="category-dot" style="background: var(--fe)"></div>
+        <span class="category-name">Frontend</span>
+      </div>
+      <div class="category-line"></div>
+      <span class="category-count">1 roadmap</span>
+    </div>
+
+    <div class="roadmap-grid">
+      <a class="card fe" href="roadmaps/frontend/index.html">
+        <div class="card-top">
+          <div class="card-icon">⚛️</div>
+          <div class="arrow">→</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">React &amp; <em>TypeScript</em></div>
+          <div class="card-desc">Tópicos essenciais para passar em entrevistas técnicas de nível pleno — React avançado, TypeScript, performance, segurança, acessibilidade e arquitetura.</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="card-tag">React</span>
+            <span class="card-tag">TypeScript</span>
+            <span class="card-tag">Performance</span>
+          </div>
+          <div class="card-level">pleno</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- DESIGN -->
+  <div class="category">
+    <div class="category-header">
+      <div class="category-label">
+        <div class="category-dot" style="background: var(--ds)"></div>
+        <span class="category-name">Design</span>
+      </div>
+      <div class="category-line"></div>
+      <span class="category-count">3 roadmaps</span>
+    </div>
+
+    <div class="roadmap-grid">
+
+      <a class="card ds" href="roadmaps/design/uxui/index.html">
+        <div class="card-top">
+          <div class="card-icon">✦</div>
+          <div class="arrow">→</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">UX/<em>UI</em> Design</div>
+          <div class="card-desc">Do entendimento do usuário à entrega visual. Heurísticas, Figma, design systems, pesquisa e acessibilidade para agências e estúdios.</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="card-tag">Figma</span>
+            <span class="card-tag">UX Research</span>
+            <span class="card-tag">UI</span>
+          </div>
+          <div class="card-level">júnior</div>
+        </div>
+      </a>
+
+      <a class="card ds" href="roadmaps/design/product/index.html">
+        <div class="card-top">
+          <div class="card-icon">◆</div>
+          <div class="arrow">→</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Product <em>Design</em></div>
+          <div class="card-desc">Do problema ao produto. Discovery, métricas, processo de design e colaboração com devs e PMs para agências orientadas a produto.</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="card-tag">Discovery</span>
+            <span class="card-tag">Métricas</span>
+            <span class="card-tag">Processo</span>
+          </div>
+          <div class="card-level">júnior</div>
+        </div>
+      </a>
+
+      <a class="card ds" href="roadmaps/design/graphic/index.html">
+        <div class="card-top">
+          <div class="card-icon">★</div>
+          <div class="arrow">→</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Design <em>Gráfico</em></div>
+          <div class="card-desc">Do fundamento teórico à entrega profissional. Tipografia, identidade visual, produção gráfica e portfólio para agências criativas.</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="card-tag">Identidade Visual</span>
+            <span class="card-tag">Tipografia</span>
+            <span class="card-tag">Adobe</span>
+          </div>
+          <div class="card-level">júnior</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-left">// progresso salvo individualmente em cada roadmap</div>
+  <div class="footer-links">
+    <a href="https://github.com/phtoselli" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/phtoselli" target="_blank">LinkedIn</a>
+    <a href="https://pedrotoselli.com" target="_blank">pedrotoselli.com</a>
+  </div>
+</footer>
+
+</body>
+</html>
